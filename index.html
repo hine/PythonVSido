@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <title></title>
+    <script language="javascript">
+      var ws = new WebSocket("ws://localhost:8080/ws");
+      var sent_deleter = null;
+      var receiverd_deleter = null;
+      ws.onopen = function() {
+      };
+      ws.onmessage = function (evt) {
+        try {
+          var obj = JSON.parse(evt.data);
+          if (obj["type"] == "sent") {
+            document.getElementById('sent_command').innerHTML = obj["data"];
+            if (sent_deleter !== null) {
+              clearTimeout(sent_deleter);
+              sent_deleter = null;
+            }
+            sent_deleter = setTimeout(function (){
+              document.getElementById('sent_command').innerHTML = null;
+            } , 5000);
+          }
+          if (obj["type"] == "received") {
+            document.getElementById('received_data').innerHTML = obj["data"];
+            if (receiverd_deleter !== null) {
+              clearTimeout(receiverd_deleter);
+              receiverd_deleter = null;
+            }
+            receiverd_deleter = setTimeout(function (){
+              document.getElementById('received_data').innerHTML = null;
+            } , 5000);
+          }
+        } catch(e) {
+
+        }
+      };
+      function OnWalkButtonClick() {
+        ws.send("walk_forward");
+      }
+    </script>
+    <style type="text/css">
+      a{
+        text-decoration: none;
+      }
+
+      .text {
+        border:1px solid #999999;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        padding: 2px 10px;
+        color:#aaaaaa ;
+      }
+
+      .btn {
+        background: #EEE;
+        border: 1px solid #DDD;
+        border-radius: 4px;
+        -moz-border-radius: 4px;
+        -webkit-border-radius: 4px;
+        color: #111;
+        width: 100px;
+        padding: 10px 0;
+      }
+      .button {
+        width:200px;
+        font-size:24px;
+        font-weight:bold;
+        text-decoration:none;
+        display:block;
+        text-align:center;
+        padding:8px 0 10px;
+        color:#333;
+        border:1px solid #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ui">
+      <a class="button" href="#" onclick="OnWalkButtonClick();" style="margin: 0 auto;">Walk</a>
+    </div>
+    <div id="received_message" class="text" style="margin-top: 10px;">
+      sent_data:<div id="sent_command"></div><br />
+      received_data:<div id="received_data"></div><br />
+    </div>
+  </body>
+</html>
