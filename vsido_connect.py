@@ -23,7 +23,6 @@ class VSidoConnect(object):
         # インスタンス生成時にシリアル接続
         self.serial = serial.serial_for_url(port, baudrate, timeout=1)
         self.recieve_buffer = []
-        self.message_buffer = []
 
     def start_reciever(self):
         """ 受信スレッドを立ち上げる """
@@ -52,7 +51,6 @@ class VSidoConnect(object):
                             for data in self.recieve_buffer:
                                 recieve_buffer_str.append('%02x' % data)
                             print('< ' + ' '.join(recieve_buffer_str))
-                            self.message_buffer.append('{"type":"received", "data":"' + ' '.join(recieve_buffer_str) + '"}')
                             self.recieve_buffer = []
         except serial.SerialException:
             self.alive = False
@@ -67,7 +65,6 @@ class VSidoConnect(object):
             data_str.append('%02x' % data)
         self.serial.write(data_bytes)
         print('> ' + ' '.join(data_str))
-        self.message_buffer.append('{"type":"sent", "data":"' + ' '.join(data_str) + '"}')
 
     def _make_2byte_data(self, value):
         ''' 2Byteデータを送る場合のff回避ロジック(V-Sido CONNECT RCコマンドリファレンス参照) '''
