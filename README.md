@@ -12,6 +12,9 @@
 Start Python Clubさん主催のイベント「業務のためのPython勉強会#3」にお呼ばれしたので、PythonでのV-Sido CONNECTの利用とIoTも含むハードウェアをPythonから活用するアイデアの一端になればと思い書きました。
 http://startpython.connpass.com/event/17073/
 
+また、当日の発表資料はSlideShareで公開しています。
+http://www.slideshare.net/hinegdw/pythonvsido-connect
+
 ## 動作環境
 Python3系で書きました。
 
@@ -38,7 +41,9 @@ $ python vsido_connect_server.py \[シリアルポートデバイス\]
 
 で、サーバーを起動した後、
 
-ブラウザで、 http://localhost:8080/ を開いてください。
+ブラウザで、
+http://localhost:8080/
+を開いてください。
 
 ## 免責事項
 一応。  
