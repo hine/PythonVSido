@@ -1,8 +1,5 @@
-import struct
 import serial
-import sys
 import threading
-import time
 
 DEFAULT_PORT = '/dev/tty.usbserial'
 DEFAULT_BAUTRATE = 115200
@@ -101,6 +98,9 @@ class VSidoConnect(object):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if __name__ == '__main__':
 
+    import sys
+    import time
+
     print("=== Python V-Sido TEST ===")
 
     # 引数からシリアルポートを決定する
@@ -125,6 +125,8 @@ if __name__ == '__main__':
     # V-Sido CONNECTからの受信スレッド立ち上げ
     vsidoconnect.start_reciever()
     print("done.")
+    print("exit: Ctrl-C")
+    print("")
 
     # テストで歩行コマンド
     vsidoconnect.send_data(vsidoconnect.make_walk_command(100, 0))

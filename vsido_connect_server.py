@@ -1,8 +1,5 @@
-import struct
 import serial
-import sys
 import threading
-import time
 
 import tornado.ioloop
 import tornado.web
@@ -149,6 +146,9 @@ web_app = tornado.web.Application([
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if __name__ == '__main__':
+
+    import sys
+    import time
 
     print("=== Python V-Sido Server TEST ===")
 
