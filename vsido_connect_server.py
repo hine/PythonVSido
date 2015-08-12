@@ -111,6 +111,7 @@ class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
 
+
 class SocketHandler(tornado.websocket.WebSocketHandler):
     #on_message -> receive data
     #write_message -> send data
@@ -138,6 +139,7 @@ class SocketHandler(tornado.websocket.WebSocketHandler):
     def on_close(self):
         self.callback.stop()
         print("WebSocket closed")
+
 
 # アプリケーション割り当て
 web_app = tornado.web.Application([
