@@ -19,36 +19,36 @@ class VSidoConnect(object):
     def __init__(self, port, baudrate):
         # インスタンス生成時にシリアル接続
         self.serial = serial.serial_for_url(port, baudrate, timeout=1)
-        self.recieve_buffer = []
+        self.receive_buffer = []
 
-    def start_reciever(self):
+    def start_receiver(self):
         """ 受信スレッドを立ち上げる """
         self.receiver_alive = True
-        self.receiver_thread = threading.Thread(target=self._reciever)
+        self.receiver_thread = threading.Thread(target=self._receiver)
         self.receiver_thread.setDaemon(True)
         self.receiver_thread.start()
 
-    def stop_reciever(self):
+    def stop_receiver(self):
         """ 受信スレッドの停止 """
         self.receiver_alive = False
         self.receiver_thread.join()
 
-    def _reciever(self):
+    def _receiver(self):
         """ 受信データの処理 """
         try:
             while self.receiver_alive:
                 data = self.serial.read(1)
                 if len(data) > 0:
                     if data == 0xff:
-                        self.recieve_buffer = []
-                    self.recieve_buffer.append(int.from_bytes(data, byteorder='big'))
-                    if len(self.recieve_buffer) > 3:
-                        if len(self.recieve_buffer) == self.recieve_buffer[2]:
-                            recieve_buffer_str = []
-                            for data in self.recieve_buffer:
-                                recieve_buffer_str.append('%02x' % data)
-                            print('< ' + ' '.join(recieve_buffer_str))
-                            self.recieve_buffer = []
+                        self.receive_buffer = []
+                    self.receive_buffer.append(int.from_bytes(data, byteorder='big'))
+                    if len(self.receive_buffer) > 3:
+                        if len(self.receive_buffer) == self.receive_buffer[2]:
+                            receive_buffer_str = []
+                            for data in self.receive_buffer:
+                                receive_buffer_str.append('%02x' % data)
+                            print('< ' + ' '.join(receive_buffer_str))
+                            self.receive_buffer = []
         except serial.SerialException:
             self.alive = False
             raise
@@ -123,7 +123,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # V-Sido CONNECTからの受信スレッド立ち上げ
-    vsidoconnect.start_reciever()
+    vsidoconnect.start_receiver()
     print("done.")
     print("exit: Ctrl-C")
     print("")
